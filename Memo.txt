@@ -1,0 +1,11 @@
+🏷️ MongoDB
+ID : ryong
+PW : abcd1234
+IP : 222.110.121.176/32
+
+mongodb+srv://ryong:<password>@boilerplate.qxpom94.mongodb.net/?retryWrites=true&w=majority
+
+🏷️ Mongoose
+몽고DB를 편하게 쓸 수 있는 Object Modeling Tool
+
+npm i mongoose
