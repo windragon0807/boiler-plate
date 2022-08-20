@@ -1,0 +1,36 @@
+📖 MongoDB
+ID : ryong
+PW : abcd1234
+IP : 222.110.121.176/32
+
+📖 Postman
+서버 통신을 위한 Client가 없을 때, client 역할을 할 수 있는 사이트
+
+🏷️ mongoose
+    몽고DB를 편하게 쓸 수 있는 Object Modeling Tool
+
+        npm i mongoose
+
+🏷️ body-parser
+    Client에서 Server로 Json, Buffer 등의 Encoded data들이 Reqeust되는데,
+    Body 데이터를 분석해서 req.body로 출력해주는 것
+
+        npm i body-parser
+
+🏷️ nodemon
+    서버 코드 수정 후, hotreload 기능
+
+        npm i nodemon --save-dev
+
+    서버를 시작할 때 nodemon으로 시작하기 -> 스크립트 변경하기
+
+        "backend": "nodemon index.js",
+
+🏷️ bcrypt
+    현재 데이터베이스에 저장된 비밀번호를 보면 안전하지 않은 상태 -> 암호화가 필요
+
+        npm i bcrypt
+
+🏷️ cookie-parser
+
+🏷️ jsonwebtoken
