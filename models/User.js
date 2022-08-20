@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+
 const saltRounds = 10;
 
 const userSchema = mongoose.Schema({
@@ -27,7 +29,7 @@ const userSchema = mongoose.Schema({
     },
     image: String,
     token: {
-        // 나중에 token을 활용한 유효성 검사 등
+        // 유효성 검사를 하기 위함
         type: String,
     },
     tokenExp: {
@@ -36,27 +38,60 @@ const userSchema = mongoose.Schema({
     },
 });
 
-// save() 이전에 실행하는 함수를 구현할 수 있다.
+// 🏷️ save() 이전에 실행하는 함수를 구현할 수 있다.
 userSchema.pre("save", function (next) {
     // 화살표 함수로 사용하지 말고 function을 사용하자.
     const user = this; // userSchema를 가리킨다.
-    // 비밀번호를 암호화
+    // password가 변경될 때만 bcrypt를 이용하여 비밀번호를 암호화
     if (user.isModified("password")) {
-        // password가 변환될 때만, bcrypt를 이용하여 암호화
+        // 미리 설정된 saltRounds로 salt를 생성한다.
         bcrypt.genSalt(saltRounds, function (error, salt) {
-            // saltRounds로 salt를 생성한다.
-            if (error) return next(error);
-            // error 없이 salt가 생성되면,
+            if (error) return next(error); // pre() 빠져나가기
+            // salt가 성공적으로 생성되면, req를 통해 전달받은 password를 salt를 이용해서 암호화시킨다.
             bcrypt.hash(user.password, salt, function (error, hash) {
-                // req를 통해 전달받은 password를 salt를 이용해서 암호화시키고,
-                // 성공적으로 암호화가 되면 hash가 암호화된 비밀번호가 된다.
                 if (error) return next(error);
-                user.password = hash; // 암호화된 비밀번호를 user의 password에 저장
+                user.password = hash; // 암호화된 비밀번호(hash)를 user의 password로 저장
                 next();
             });
         });
+    } else {
+        next(); // pre() 빠져나가기
     }
 });
+
+// 📐 커스텀 함수 - 비밀번호 같은지 확인
+userSchema.methods.comparePassword = function (plainPasswrod, callback) {
+    // 로그인 요청에 들어온 password와 저장된 hash 처리된 password와 같은지 확인
+    bcrypt.compare(plainPasswrod, this.password, function (error, isMatch) {
+        if (error) return callback(error);
+        return callback(null, isMatch);
+    });
+};
+
+// 📐 커스텀 함수 - 토큰 생성
+userSchema.methods.generateToken = function (callback) {
+    const user = this;
+    // 🔗 토큰을 생성하는 방법 : user._id + 'secretToken' => token
+    const token = jwt.sign(user._id.toHexString(), "secretToken"); // 토큰 생성
+    user.token = token;
+    user.save((error, user) => {
+        if (error) return callback(error);
+        return callback(null, user);
+    });
+};
+
+// 📐 커스텀 함수 - 토큰으로 유저 찾기
+userSchema.statics.findByToken = function (token, callback) {
+    const user = this;
+    // 🔗 토큰 복호화 하는 방법 : 'secretToken' => user._id
+    jwt.verify(token, "secretToken", function (error, decoded) {
+        // 유저 데이터베이스에 복호화된 user_id와 클라이언트에서 보낸 token이 쌍으로 있다면, 인증 성공
+        user.findOne({ _id: decoded, token: token }, function (error, user) {
+            if (error) return callback(error);
+            return callback(null, user);
+        });
+    });
+};
 
 // 스키마를 모델로 감싸준다.
 const User = mongoose.model("User", userSchema);
