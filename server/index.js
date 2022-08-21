@@ -7,7 +7,6 @@ const { User } = require("./models/User");
 const { auth } = require("./middleware/auth");
 
 const app = express();
-const port = 5000;
 // 🏷️ application/x-www-form-urlencoded 데이터를 분석해서 가져올 수 있도록 해준다.
 app.use(bodyParser.urlencoded({ extended: true }));
 // 🏷️ application/json 데이터를 분석해서 가져올 수 있도록 해준다.
@@ -21,6 +20,10 @@ mongoose
     .catch((error) => console.log(error));
 
 app.get("/", (req, res) => res.send("Hello World!"));
+
+app.get("/api/hello", (req, res) => {
+    res.send("Test Server Communication Success!");
+});
 
 // 📂 회원가입
 app.post("/api/users/register", (req, res) => {
@@ -92,4 +95,5 @@ app.get("/api/users/logout", auth, (req, res) => {
 });
 
 // 서버 가동
+const port = 5000;
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
