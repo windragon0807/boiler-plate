@@ -1,11 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import logger from "redux-logger";
 import ReduxThunk from "redux-thunk";
-import loginUserReducer from "./slices/loginUserReducer";
+import LoginUserReducer from "./slices/loginUserReducer";
 
 const store = configureStore({
     reducer: {
-        loginUser: loginUserReducer,
+        login: LoginUserReducer,
     },
     middleware: (getDefaultMiddleware) => [
         ...getDefaultMiddleware({ serializableCheck: false }),

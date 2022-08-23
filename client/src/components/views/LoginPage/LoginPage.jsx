@@ -2,14 +2,14 @@ import { useState } from "react";
 import styled from "styled-components";
 import { Box } from "../../../styles/common/layout";
 import { useDispatch } from "react-redux";
-import { setLoginUser } from "../../../redux/slices/loginUserReducer";
+import { loginData } from "../../../redux/slices/loginUserReducer";
 import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
     const dispatch = useDispatch();
-    const navigate = useNavigate();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const navigate = useNavigate();
 
     const onEmailChange = (event) => {
         setEmail(event.currentTarget.value);
@@ -21,13 +21,15 @@ const LoginPage = () => {
 
     const onSubmit = (event) => {
         event.preventDefault(); // page refresh 방지
-
         const body = {
             email,
             password,
         };
-
-        dispatch(setLoginUser(body));
+        dispatch(loginData(body)).then(({ payload }) => {
+            if (payload.loginSuccess) {
+                navigate("/");
+            }
+        });
     };
 
     return (
