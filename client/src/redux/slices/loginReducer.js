@@ -1,12 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-export const loginData = createAsyncThunk("login/loginData", async (data) => {
-    const response = await axios.post("/api/users/login", data);
+export const loginData = createAsyncThunk("login/loginData", async (inputData) => {
+    const response = await axios.post("/api/users/login", inputData);
     return response.data;
 });
 
-export const LoginUserSlice = createSlice({
+export const LoginSlice = createSlice({
     name: "login",
     initialState: {
         loginSuccess: false,
@@ -15,17 +15,13 @@ export const LoginUserSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder.addCase(loginData.fulfilled, (state, { payload }) => {
-            // const navigate = useNavigate();
             console.log(payload);
             const { loginSuccess, userId } = payload;
             state.loginSuccess = loginSuccess;
             state.userId = userId;
-            if (loginSuccess) {
-                // navigate("/");
-            }
         });
     },
 });
 
-export const {} = LoginUserSlice.actions;
-export default LoginUserSlice.reducer;
+export const {} = LoginSlice.actions;
+export default LoginSlice.reducer;
