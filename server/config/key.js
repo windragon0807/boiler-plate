@@ -1,6 +1,14 @@
+import "./env.js";
+
+let config;
 if (process.env.NODE_ENV === "production") {
-    // 환경변수가 배포 버전일 경우,
-    module.exports = require("./prod"); // prod.js에서 변수를 가져온다.
+    config = {
+        mongoURI: process.env.MONGO_URI, // 배포환경
+    };
 } else {
-    module.exports = require("./dev");
+    config = {
+        mongoURI: process.env.MONGO_KEY, // 개발환경
+    };
 }
+
+export default config;

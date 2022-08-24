@@ -9,20 +9,16 @@ export const registerData = createAsyncThunk("register/registerData", async (inp
 export const RegisterSlice = createSlice({
     name: "register",
     initialState: {
-        loginSuccess: false,
-        userId: "",
+        success: false,
     },
     reducers: {},
     extraReducers: (builder) => {
         builder.addCase(registerData.fulfilled, (state, { payload }) => {
             console.log(payload);
-            // const { loginSuccess, userId } = payload;
-            // state.loginSuccess = loginSuccess;
-            // state.userId = userId;
+            const { success } = payload;
+            state.success = success;
         });
     },
 });
-
-export const {} = RegisterSlice.actions;
 
 export default RegisterSlice.reducer;

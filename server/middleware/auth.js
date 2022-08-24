@@ -1,7 +1,7 @@
-const { User } = require("../models/User");
+import { User } from "../models/User.js";
 
-// 인증 처리 담당하는 곳
-const auth = (req, res, next) => {
+// 🏷️ 사용자 로그인 인증
+export const auth = (req, res, next) => {
     // 클라이언트 쿠키에서 토큰을 가져온다.
     const token = req.cookies.x_auth;
     // 토큰을 복호화한 후, 유저를 찾는다.
@@ -14,5 +14,3 @@ const auth = (req, res, next) => {
         next(); // 미들웨어 빠져나가기
     });
 };
-
-module.exports = { auth };

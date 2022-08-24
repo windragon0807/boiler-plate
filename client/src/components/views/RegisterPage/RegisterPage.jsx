@@ -35,9 +35,9 @@ const RegisterPage = () => {
 
     return (
         <Box>
-            <AwesomeText className="mb-5">회원가입</AwesomeText>
+            <AwesomeText className="mb-4">회원가입</AwesomeText>
             <FlexForm onSubmit={handleSubmit(onValid, onError)}>
-                <Form.Group className="mb-3">
+                <Form.Group className="mb-2">
                     <Form.Label>Name</Form.Label>
                     <Form.Control
                         {...register("name", {
@@ -47,7 +47,7 @@ const RegisterPage = () => {
                     />
                     <ErrorText className="mt-2">{errors?.name?.message}</ErrorText>
                 </Form.Group>
-                <Form.Group className="mb-3">
+                <Form.Group className="mb-2">
                     <Form.Label>Email</Form.Label>
                     <Form.Control
                         type="email"
@@ -62,7 +62,7 @@ const RegisterPage = () => {
                     />
                     <ErrorText className="mt-2">{errors?.email?.message}</ErrorText>
                 </Form.Group>
-                <Form.Group className="mb-3">
+                <Form.Group className="mb-2">
                     <Form.Label>Password</Form.Label>
                     <Form.Control
                         type="password"
@@ -77,7 +77,7 @@ const RegisterPage = () => {
                     />
                     <ErrorText className="mt-2">{errors?.password?.message}</ErrorText>
                 </Form.Group>
-                <Form.Group className="mb-4">
+                <Form.Group className="mb-3">
                     <Form.Label>Password Confirm</Form.Label>
                     <Form.Control
                         type="password"

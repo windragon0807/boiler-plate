@@ -1,6 +1,6 @@
-const mongoose = require("mongoose");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
+import mongoose from "mongoose";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 const saltRounds = 10;
 
@@ -38,19 +38,18 @@ const userSchema = mongoose.Schema({
     },
 });
 
-// 🏷️ save() 이전에 실행하는 함수를 구현할 수 있다.
+// 🏷️ save() 이전에 실행하는 함수
 userSchema.pre("save", function (next) {
-    // 화살표 함수로 사용하지 말고 function을 사용하자.
-    const user = this; // userSchema를 가리킨다.
+    const user = this; // this === userSchema
     // password가 변경될 때만 bcrypt를 이용하여 비밀번호를 암호화
     if (user.isModified("password")) {
-        // 미리 설정된 saltRounds로 salt를 생성한다.
+        // saltRounds 설정값으로 salt를 생성
         bcrypt.genSalt(saltRounds, function (error, salt) {
             if (error) return next(error); // pre() 빠져나가기
-            // salt가 성공적으로 생성되면, req를 통해 전달받은 password를 salt를 이용해서 암호화시킨다.
+            // salt가 성공적으로 생성되면, req를 통해 전달받은 password를 salt를 이용해서 암호화
             bcrypt.hash(user.password, salt, function (error, hash) {
                 if (error) return next(error);
-                user.password = hash; // 암호화된 비밀번호(hash)를 user의 password로 저장
+                user.password = hash; // 암호화된 비밀번호(hash)를 user의 password로 DB에 저장
                 next();
             });
         });
@@ -59,16 +58,16 @@ userSchema.pre("save", function (next) {
     }
 });
 
-// 📐 커스텀 함수 - 비밀번호 같은지 확인
+// 🏷️ 커스텀 함수 - 비밀번호 같은지 확인
 userSchema.methods.comparePassword = function (plainPasswrod, callback) {
-    // 로그인 요청에 들어온 password와 저장된 hash 처리된 password와 같은지 확인
+    // 로그인 요청에 들어온 password와 DB에 저장된 password(hashed)와 같은지 확인
     bcrypt.compare(plainPasswrod, this.password, function (error, isMatch) {
         if (error) return callback(error);
         return callback(null, isMatch);
     });
 };
 
-// 📐 커스텀 함수 - 토큰 생성
+// 🏷️ 커스텀 함수 - 토큰 생성
 userSchema.methods.generateToken = function (callback) {
     const user = this;
     // 🔗 토큰을 생성하는 방법 : user._id + 'secretToken' => token
@@ -80,7 +79,7 @@ userSchema.methods.generateToken = function (callback) {
     });
 };
 
-// 📐 커스텀 함수 - 토큰으로 유저 찾기
+// 🏷️ 커스텀 함수 - 토큰으로 유저 찾기
 userSchema.statics.findByToken = function (token, callback) {
     const user = this;
     // 🔗 토큰 복호화 하는 방법 : 'secretToken' => user._id
@@ -93,7 +92,4 @@ userSchema.statics.findByToken = function (token, callback) {
     });
 };
 
-// 스키마를 모델로 감싸준다.
-const User = mongoose.model("User", userSchema);
-
-module.exports = { User };
+export const User = mongoose.model("User", userSchema);
