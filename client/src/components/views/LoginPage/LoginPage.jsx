@@ -2,13 +2,15 @@ import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import Form from "react-bootstrap/Form";
-import { loginData } from "../../../redux/slices/loginReducer";
+import useRedirect from "./../../../hooks/useRedirect";
+import { signInAndAuth } from "../../../redux/slices/userReducer";
 import { Box } from "../../../styles/common/layout";
-import { AwesomeText, FlexForm, ExtendButton, ErrorText } from "./../../../styles/common/component";
+import { AwesomeText, FlexForm, ExtendButton, ErrorText } from "../../../styles/common/component";
 
 const LoginPage = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    useRedirect("/");
     const {
         register,
         handleSubmit,
@@ -17,8 +19,8 @@ const LoginPage = () => {
 
     const onValid = (data) => {
         console.log("✔️", data);
-        dispatch(loginData(data)).then(({ payload }) => {
-            if (payload.loginSuccess) {
+        dispatch(signInAndAuth(data)).then((payload) => {
+            if (payload) {
                 navigate("/");
             }
         });
@@ -32,8 +34,9 @@ const LoginPage = () => {
         <Box>
             <AwesomeText className="mb-5">로그인</AwesomeText>
             <FlexForm onSubmit={handleSubmit(onValid, onError)}>
+                {/* 🧩 이메일 */}
                 <Form.Group className="mb-3">
-                    <Form.Label>Email</Form.Label>
+                    <Form.Label>이메일</Form.Label>
                     <Form.Control
                         className="mb-2"
                         type="email"
@@ -48,8 +51,9 @@ const LoginPage = () => {
                     />
                     <ErrorText>{errors?.email?.message}</ErrorText>
                 </Form.Group>
+                {/* 🧩 비밀번호 */}
                 <Form.Group className="mb-4">
-                    <Form.Label>Password</Form.Label>
+                    <Form.Label>비밀번호</Form.Label>
                     <Form.Control
                         className="mb-2"
                         type="password"
@@ -64,16 +68,17 @@ const LoginPage = () => {
                     />
                     <ErrorText>{errors?.password?.message}</ErrorText>
                 </Form.Group>
+                {/* 🧩 버튼 */}
                 <ExtendButton type="submit" className="mb-3">
-                    Login
+                    로그인
                 </ExtendButton>
                 <Link to={"/register"}>
                     <ExtendButton variant="success" className="mb-3">
-                        Register
+                        회원가입
                     </ExtendButton>
                 </Link>
                 <Link to={"/"}>
-                    <ExtendButton variant="secondary">Home</ExtendButton>
+                    <ExtendButton variant="secondary">홈</ExtendButton>
                 </Link>
             </FlexForm>
         </Box>

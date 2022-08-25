@@ -21,7 +21,7 @@ if (process.env.NODE_ENV === "production") {
     app.use(morgan("dev")); // 개발환경
 }
 
-// 🏷️ 라우터 설정
+// 🏷️ 라우터 연결
 app.use("/api/users", userRouter);
 
 // 🏷️ Mongo DB 연결
@@ -36,7 +36,7 @@ app.get("/", (req, res) => {
 
 // 🏷️ 서버 접속 확인
 app.get("/api/hello", (req, res) => {
-    res.send("🔔 The connection to the server was successful!");
+    res.send("🔅 The connection to the server was successful!");
 });
 
 // 🏷️ 서버 가동

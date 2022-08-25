@@ -3,12 +3,14 @@ import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import { Box } from "../../../styles/common/layout";
-import { registerData } from "../../../redux/slices/registerReducer";
-import { AwesomeText, FlexForm, ExtendButton, ErrorText } from "./../../../styles/common/component";
+import useRedirect from "./../../../hooks/useRedirect";
+import { signUp } from "../../../redux/slices/userReducer";
+import { AwesomeText, FlexForm, ExtendButton, ErrorText } from "../../../styles/common/component";
 
 const RegisterPage = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    useRedirect("/");
     const {
         register,
         handleSubmit,
@@ -17,11 +19,11 @@ const RegisterPage = () => {
     } = useForm();
 
     const onValid = (data) => {
-        console.log("✔️", data);
+        console.log("✔️ Sign Up Input Data\n\n", data);
         if (data.password !== data.confirm) {
-            setError("confirm", { message: "Password are not the same." }, { shouldFocus: true });
+            setError("confirm", { message: "비밀번호가 서로 다릅니다." }, { shouldFocus: true });
         } else {
-            dispatch(registerData(data)).then(({ payload }) => {
+            dispatch(signUp(data)).then(({ payload }) => {
                 if (payload.success) {
                     navigate("/login");
                 }
@@ -37,69 +39,74 @@ const RegisterPage = () => {
         <Box>
             <AwesomeText className="mb-4">회원가입</AwesomeText>
             <FlexForm onSubmit={handleSubmit(onValid, onError)}>
+                {/* 🧩 이름 */}
                 <Form.Group className="mb-2">
-                    <Form.Label>Name</Form.Label>
+                    <Form.Label>이름</Form.Label>
                     <Form.Control
                         {...register("name", {
-                            required: "Name is required",
+                            required: "이름을 입력해주세요.",
                         })}
                         placeholder="정승룡"
                     />
                     <ErrorText className="mt-2">{errors?.name?.message}</ErrorText>
                 </Form.Group>
+                {/* 🧩 이메일 */}
                 <Form.Group className="mb-2">
-                    <Form.Label>Email</Form.Label>
+                    <Form.Label>이메일</Form.Label>
                     <Form.Control
                         type="email"
                         {...register("email", {
-                            required: "Email is required",
+                            required: "이메일을 입력해주세요",
                             pattern: {
                                 value: /^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
-                                message: "Correct your email format.",
+                                message: "올바른 이메일 형식이 필요합니다.",
                             },
                         })}
                         placeholder="tmdfyd95@naver.com"
                     />
                     <ErrorText className="mt-2">{errors?.email?.message}</ErrorText>
                 </Form.Group>
+                {/* 🧩 비밀번호 */}
                 <Form.Group className="mb-2">
-                    <Form.Label>Password</Form.Label>
+                    <Form.Label>비밀번호</Form.Label>
                     <Form.Control
                         type="password"
                         {...register("password", {
-                            required: "Password is required",
+                            required: "비밀번호를 입력해주세요.",
                             minLength: {
                                 value: 5,
-                                message: "Your password is too short.",
+                                message: "비밀번호가 너무 짧습니다.",
                             },
                         })}
                         placeholder="Password"
                     />
                     <ErrorText className="mt-2">{errors?.password?.message}</ErrorText>
                 </Form.Group>
+                {/* 🧩 비밀번호 확인 */}
                 <Form.Group className="mb-3">
-                    <Form.Label>Password Confirm</Form.Label>
+                    <Form.Label>비밀번호 확인</Form.Label>
                     <Form.Control
                         type="password"
                         {...register("confirm", {
-                            required: "Password Confirm is required",
+                            required: "비밀번호를 확인해주세요.",
                             minLength: {
                                 value: 5,
-                                message: "Your password is too short.",
+                                message: "비밀번호가 너무 짧습니다.",
                             },
                         })}
                         placeholder="Password Confirm"
                     />
                     <ErrorText className="mt-2">{errors?.confirm?.message}</ErrorText>
                 </Form.Group>
+                {/* 🧩 버튼 */}
                 <ExtendButton type="submit" variant="success" className="mb-3">
-                    Register
+                    등록하기
                 </ExtendButton>
                 <Link to={"/login"}>
-                    <ExtendButton className="mb-3">Login</ExtendButton>
+                    <ExtendButton className="mb-3">로그인</ExtendButton>
                 </Link>
                 <Link to={"/"}>
-                    <ExtendButton variant="secondary">Home</ExtendButton>
+                    <ExtendButton variant="secondary">홈</ExtendButton>
                 </Link>
             </FlexForm>
         </Box>
