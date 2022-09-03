@@ -2,10 +2,10 @@ import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import Form from "react-bootstrap/Form";
-import useRedirect from "./../../../hooks/useRedirect";
-import { signInAndAuth } from "../../../redux/slices/userReducer";
-import { Box } from "../../../styles/common/layout";
-import { AwesomeText, FlexForm, ExtendButton, ErrorText } from "../../../styles/common/component";
+import useRedirect from "hooks/useRedirect";
+import { signInAndAuth } from "redux/slices/userReducer";
+import { Box } from "styles/common/layout";
+import { AwesomeText, FlexForm, ExtendButton, ErrorText } from "styles/common/component";
 
 const LoginPage = () => {
     const dispatch = useDispatch();

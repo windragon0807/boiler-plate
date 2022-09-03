@@ -1,5 +1,5 @@
 import { createGlobalStyle } from "styled-components";
-import MapleStory from "../assets/fonts/Maplestory_Light.ttf";
+import MapleStory from "assets/fonts/Maplestory_Light.ttf";
 
 const GlobalStyle = createGlobalStyle`
     // font

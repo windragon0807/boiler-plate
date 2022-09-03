@@ -2,10 +2,10 @@ import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import Form from "react-bootstrap/Form";
-import { Box } from "../../../styles/common/layout";
-import useRedirect from "./../../../hooks/useRedirect";
-import { signUp } from "../../../redux/slices/userReducer";
-import { AwesomeText, FlexForm, ExtendButton, ErrorText } from "../../../styles/common/component";
+import { Box } from "styles/common/layout";
+import useRedirect from "hooks/useRedirect";
+import { signUp } from "redux/slices/userReducer";
+import { AwesomeText, FlexForm, ExtendButton, ErrorText } from "styles/common/component";
 
 const RegisterPage = () => {
     const dispatch = useDispatch();

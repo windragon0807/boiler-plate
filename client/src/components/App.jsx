@@ -2,11 +2,11 @@ import { BrowserRouter } from "react-router-dom";
 import Router from "./Router";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
-import store, { persistor } from "../redux/store";
+import store, { persistor } from "redux/store";
 import { ThemeProvider } from "styled-components";
-import theme from "./../styles/theme";
+import theme from "styles/theme";
 import "bootstrap/dist/css/bootstrap.min.css";
-import GlobalStyle from "../styles/GlobalStyle";
+import GlobalStyle from "styles/GlobalStyle";
 
 function App() {
     return (

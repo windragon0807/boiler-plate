@@ -4,9 +4,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-import { logoutAndAuth } from "../../../redux/slices/userReducer";
-import { Box } from "../../../styles/common/layout";
-import { AwesomeText } from "../../../styles/common/component";
+import { logoutAndAuth } from "redux/slices/userReducer";
+import { Box } from "styles/common/layout";
+import { AwesomeText } from "styles/common/component";
 
 const LandingPage = () => {
     const dispatch = useDispatch();
